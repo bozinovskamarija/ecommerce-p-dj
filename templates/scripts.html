@@ -1,0 +1,24 @@
+{% load static %}
+
+<script type="text/javascript" src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="{% static 'js/mdb.min.js' %}"></script>
+<!-- Initializations -->
+<script type="text/javascript">
+    // Animations initialization
+    new WOW().init();
+
+</script>
+
+<script type="text/javascript">
+    var vsid = "ce67100";
+    (function () {
+        var vsjs = document.createElement('script'); vsjs.type = 'text/javascript'; vsjs.async = true; vsjs.setAttribute('defer', 'defer');
+        vsjs.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'www.virtualspirits.eu/vsa/chat-' + vsid + '.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(vsjs, s);
+    })();
+</script>

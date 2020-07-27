@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<main class="mt-5 pt-4">
+  <div class="container dark-grey-text mt-5">
+
+    <!--Grid row-->
+    <div class="row wow fadeIn">
+
+      <!--Grid column-->
+      <div class="col-md-6 mb-4">
+
+        <img src="{{ item.image1_product.url }}" class="img-fluid" alt="">
+
+      </div>
+      <!--Grid column-->
+
+      <!--Grid column-->
+      <div class="col-md-6 mb-3">
+
+        <!--Content-->
+        <div class="p-4">
+
+          <div class="mb-3">
+            <a href="">
+              <span class="badge purple mr-1">{{ object.get_category_display }}</span>
+            </a>
+          </div>
+
+          <p class="lead">
+            {% if object.discount_price %}
+            <span class="mr-1"> <del>€{{ object.price }}</del> </span>
+            <span>€{{ object.discount_price}}</span>
+            {% else %} <span>€{{ object.price}}</span>
+            {% endif %}
+          </p>
+
+          <p class="lead font-weight-bold"> {{item.title}} </p>
+
+          <p> {{ object.description }} </p>
+
+          {% if request.user.is_authenticated %}
+
+          <a href="{{object.get_add_to_cart_url}}" class="btn btn-primary btn-md my-0 p">Add to cart
+            <i class="fas fa-shopping-cart ml-1"></i>
+          </a>
+          {% else %}
+          <a href="{% url 'account_login' %}" class="btn btn-primary btn-md my-0 p">Add to cart
+            <i class="fas fa-shopping-cart ml-1"></i>
+          </a>
+          {% endif %}
+        </div>
+        <!--Content-->
+
+      </div>
+      <!--Grid column-->
+
+    </div>
+    <!--Grid row-->
+
+    <hr>
+
+    <!--Grid row-->
+    <div class="row d-flex justify-content-center wow fadeIn">
+
+      <!--Grid column-->
+      <div class="col-md-6 text-center">
+        <h4 class="my-4 h4"> Details </h4>
+
+        <p><b>SHIPPING: </b> Shipping is available to customers at least 13 years of age with a valid US shipping and
+          billing address. </p>
+        <p><b>PAYMENT: </b> We accept card payments via Visa, MasterCard, Discover and American Express. </p>
+        <p><b>RETURNS: </b> Easy online returns within 30 days (return fee $5.99). Free return or exchange in-store.
+        </p>
+
+
+
+      </div>
+      <!--Grid column-->
+
+    </div>
+    <!--Grid row-->
+
+    <!--Grid row-->
+    <div class="row wow fadeIn">
+
+      <div class="col-lg-4 col-md-12 mb-4">
+        <img src="{{ item.image2_product.url }}" class="img-fluid" alt="">
+      </div>
+
+      <div class="col-lg-4 col-md-6 mb-4">
+        <img src="{{ item.image3_product.url }}" class="img-fluid" alt="">
+      </div>
+
+      <div class="col-lg-4 col-md-6 mb-4">
+        <img src="{{ item.image4_product.url }}" class="img-fluid" alt="">
+      </div>
+
+
+    </div>
+    <!--Grid row-->
+
+  </div>
+</main>
+
+
+{% endblock content %}

@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<main>
+  <div class="container wow fadeIn">
+
+    <!-- Heading -->
+    <h2 class="my-5 h2" style="text-align:left;">Checkout form</h2>
+
+    <!--Grid row-->
+    <div class="row">
+
+
+      <!--Grid column-->
+      <div class="col-md-8 mb-2">
+
+        <!--Card-->
+        <div class="card">
+
+
+          <!--<form method='POST'>
+          {% csrf_token %}
+          {{form|crispy}}
+          <button class='btn btn-primary' type='submit'> Checkout </button>
+        </form> -->
+
+          <!--Card content-->
+          <form method="POST" class="card-body">
+            {% csrf_token %}
+
+            <div class="md-form mb-5">
+              {{ form.first_name_a}}
+              <label for="first_name_a" class="">Name</label>
+            </div>
+
+            <div class="md-form mb-5">
+              {{ form.last_name_a }}
+              <label for="last_name_a" class="">Last name</label>
+            </div>
+
+            <!--address-->
+            <div class="md-form mb-5">
+              <!-- <input type="text" id="address" class="form-control" placeholder="1234 Main St"> -->
+              {{ form.street_address }}
+              <label for="address" class="">Address for shipping</label>
+            </div>
+
+            <!--apartment number-->
+            <div class="md-form mb-5">
+              <!-- <input type="text" id="address-2" class="form-control" placeholder="Apartment No."> -->
+              {{ form.apartment_number }}
+              <label for="address-2" class="">Apartment number</label>
+            </div>
+
+            <!--Grid row-->
+            <div class="row">
+
+              <!--Grid column-->
+              <div class="col-lg-4 col-md-6 mb-4">
+
+                <label for="state">Country</label>
+                {{ form.country }}
+                <div class="invalid-feedback">
+                  Please select a valid country.
+                </div>
+
+              </div>
+              <!--Grid column-->
+
+              <!--Grid column-->
+              <div class="col-lg-4 col-md-6 mb-4">
+
+                <label for="zip">Zip</label>
+                <!-- <input type="text" class="form-control" id="zip" placeholder="" required> -->
+                {{ form.zip_code }}
+                <div class="invalid-feedback">
+                  Zip code required.
+                </div>
+
+              </div>
+              <!--Grid column-->
+
+            </div>
+            <!--Grid row-->
+
+
+            <hr>
+
+            <div class="custom-control custom-checkbox">
+              <input {% if form.save_info_for_the_next_time.value %} checked {% endif %} type="checkbox"
+                class="custom-control-input" name="save_info_for_the_next_time" id="save-info">
+              <label class="custom-control-label" for="save-info">Save this information for next time</label>
+            </div>
+
+            <hr>
+
+            <div class="d-block my-3">
+              {% for value,name in form.fields.payment_options.choices %}
+              <div class="custom-control custom-radio">
+                <input id="{{name}}" name="payment_options" value="{{ value }}" type="radio"
+                  class="custom-control-input" required>
+                <label class="custom-control-label" for="{{name}}">{{ name }}</label>
+                <!-- {{ form.payment_options }} -->
+              </div>
+              {% endfor %}
+            </div>
+
+            <hr class="mb-4">
+            <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
+
+          </form>
+
+        </div>
+        <!--/.Card-->
+
+      </div>
+      <!--Grid column-->
+
+      <!--Grid column-->
+      <div class="col-md-4 mb-4">
+
+        <!-- Heading -->
+        <h4 class="d-flex justify-content-between align-items-center mb-3">
+          <span class="text-muted">Your cart</span>
+          <span class="badge badge-secondary badge-pill">{{order.items.count}}</span>
+        </h4>
+
+        <!-- Cart -->
+        <ul class="list-group mb-3 z-depth-1">
+          {% for order_item in order.items.all %}
+          <li class="list-group-item d-flex justify-content-between lh-condensed">
+            <div>
+              <h6 class="my-0">{{order_item.quantity}} x {{order_item.item.title}}</h6>
+            </div>
+            <span class="text-muted">€{{order_item.get_total_price|floatformat:2}}</span>
+          </li>
+          {% endfor %}
+          <li class="list-group-item d-flex justify-content-between bg-light">
+            <div class="text-success">
+              <h6 class="my-0">Promo code</h6>
+              <!-- name of discount code -->
+              <small>{{order.discount_code.discount_code}}</small>
+            </div>
+            <span class="text-success">-€{{order.discount_code.amount_discount_code}}</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            <span>Total (EUR)</span>
+            <strong>€{{order.get_total|floatformat:2}}</strong>
+          </li>
+        </ul>
+        <!-- Cart -->
+
+        <!-- Promo code -->
+        <form class="card p-2" action="{% url 'core:add_discount_code' %}" method="POST">
+          {% csrf_token %}
+          <div class="input-group">
+
+            {{ discountcodeform.discount_code }}
+            <!-- <input type="text" class="form-control" placeholder="Discount code" aria-label="Recipient's username" aria-describedby="basic-addon2"> -->
+            <div class="input-group-append">
+              <button class="btn btn-secondary btn-md waves-effect m-0" type="submit">Submit</button>
+            </div>
+          </div>
+        </form>
+        <!-- Promo code -->
+
+      </div>
+      <!--Grid row-->
+
+    </div>
+</main>
+<!--Main layout-->
+
+{% endblock content %}

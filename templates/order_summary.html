@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main>
+    <div class="container">
+        <div class="table-responsive text-nowrap">
+            <h2><strong> Order Summary </strong></h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Item title</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Discount price</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Total Item Price</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order_item in object.items.all %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <!-- prikazuje brojeve narudzbina po redu 1,2,3-->
+                        <td> {{ order_item.item.title }} </td>
+                        <td> {{ order_item.item.price|floatformat:2 }} </td>
+                        <td> {{ order_item.item.discount_price|floatformat:2 }} </td>
+                        <td>
+                            <a href="{% url 'core:remove-one-item-from-cart' order_item.item.slug %}"><i
+                                    class="far fa-minus-square mr-2"></i></a>
+                            {{ order_item.quantity }}
+                            <a href="{% url 'core:add-to-cart' order_item.item.slug %}"><i
+                                    class="far fa-plus-square ml-2"></i></a>
+                        </td>
+                        <td>
+                            {% if order_item.item.discount_price %}
+                            €{{order_item.get_total_discount_item_price|floatformat:2}}
+                            <!-- (Saving €{{order_item.get_amount_saved}}) -->
+                            <p>
+                                <span class="badge badge-primary">Saving
+                                    €{{order_item.get_amount_saved|floatformat:2}}
+                                </span>
+                            </p>
+                            {% else %}
+                            €{{order_item.get_total_item_price|floatformat:2}}
+                            {% endif %}
+
+                        </td>
+                        <td><a href="{% url 'core:remove-from-cart' order_item.item.slug %}">
+                                <i class="fas fa-trash-alt float-right"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8">Your cart is empty</td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">
+                            <a class='btn btn-secondary float-right' href='/'><b>Continue shopping</b></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% if object.get_total %}
+                    <tr>
+                        <td colspan="5"><b>Order Total</b< /td>
+                        <td><b>€{{ object.get_total|floatformat:2 }}</b></td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">
+                            <a class='btn btn-warning float-right ml-2' href='/checkout-page/'><b>Checkout</b></a>
+                            <a class='btn btn-secondary float-right' href='/'><b>Continue</b></a>
+                        </td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+{% endblock content %}
